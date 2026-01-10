@@ -9,7 +9,7 @@ except ImportError:
     HasPETSc = False
 import random
 import networkx as nx
-
+from ngsolve.utils import printonce
 
 class ThinLayerFunctionSpace:
     def __init__(
@@ -198,15 +198,15 @@ class ThinLayerFunctionSpace:
                 f" Available BCs: {self.mesh.GetBoundaries()}"
             )
         bnd_cf = self.mesh.BoundaryCF(bnd_dict)
-        print(bnd_dict)
+        printonce(bnd_dict)
         if getattr(
             self.gfu, "components", None
         ):  # checks if components exists and is non-empty
             for component in self.gfu.components:
-                print("Setting component")
+                printonce("Setting component")
                 component.Set(bnd_cf, ng.BND)
         else:
-            print("Setting gfu directly")
+            printonce("Setting gfu directly")
             self.gfu.Set(bnd_cf, ng.BND)
 
     def direct_solver(self, a: ng.BilinearForm, f: ng.LinearForm):
@@ -319,9 +319,9 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
         return "|".join(names) if names else "____none____"
 
     def _print_color_report(self):
-        print("Color classes:")
+        printonce("Color classes:")
         for k, cls in enumerate(getattr(self, "color_classes", [])):
-            print(f"  C{k}: {cls}")
+            printonce(f"  C{k}: {cls}")
 
     def _build_nx_graph(self):
         if nx is None:
@@ -414,11 +414,11 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
                     best, best_k, best_name = color, K, f"random_order[{t}]"
 
         self._apply_coloring_result(best)
-        print(
+        printonce(
             f"NetworkX coloring picked: {best_name} → {len(self.color_classes)} colors"
         )
         for k, cls in enumerate(self.color_classes):
-            print(f"  C{k}: {cls}")
+            printonce(f"  C{k}: {cls}")
 
     def __init__(
         self,
@@ -574,7 +574,7 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
         gradu = self.mesh.MaterialCF(gradu_tmp)
         Y = ng.Integrate(sigma * gradu * ng.Conj(gradu), self.mesh)
         if verbose:
-            print("Bulk admittance:", Y)
+            printonce("Bulk admittance:", Y)
 
         # two-sided interfaces
         for boundary, A, B in self._iter_true_interfaces():
@@ -586,7 +586,7 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
             )
             Y += bnd_Y
             if verbose:
-                print(f"[{boundary}] {A}↔{B} : adm={bnd_Y}")
+                printonce(f"[{boundary}] {A}↔{B} : adm={bnd_Y}")
 
         # single-sided interfaces (e.g., bottoms): TMP = 0 (as per your old code)
         for boundary, A in self._iter_single_sided():
@@ -599,10 +599,10 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
             )
             Y += bnd_Y
             if verbose:
-                print(f"[{boundary}] single-sided on {A}: adm={bnd_Y}")
+                printonce(f"[{boundary}] single-sided on {A}: adm={bnd_Y}")
 
         if verbose:
-            print("Final admittance:", Y)
+            printonce("Final admittance:", Y)
         return voltage_drop**2 / Y
 
     def export_VTK(
@@ -639,7 +639,7 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
                 if save_current_density:
                     sigma = sigma_dict[dom]
                     if verbose:
-                        print(f"domain: {dom}, sigma: {sigma}")
+                        printonce(f"domain: {dom}, sigma: {sigma}")
                     # J = sigma * E
                     if current_cf is not None:
                         current_cf[dom] = E_dom * sigma
@@ -659,7 +659,7 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
             coefs += [J_mat.real, J_mat.imag]
             names += ["current_real", "current_imag"]
 
-        print(
+        printonce(
             f"ParaView threshold: material index in [{min(mat_id.values())}, {max(mat_id.values())}] (ecm at {mat_id.get('ecm', 'n/a')})"
         )
 
@@ -699,7 +699,7 @@ class ShelledThinLayerFunctionSpace(ThinLayerFunctionSpace):
             interface_id[boundary] = i
             i += 1
 
-        print(f"ParaView threshold: interface id in [1, {i - 1}]")
+        printonce(f"ParaView threshold: interface id in [1, {i - 1}]")
 
         surface_TMP = ng.CoefficientFunction(TMP_acc)
         cf_iface_id = self.mesh.BoundaryCF(interface_id, default=-1)
