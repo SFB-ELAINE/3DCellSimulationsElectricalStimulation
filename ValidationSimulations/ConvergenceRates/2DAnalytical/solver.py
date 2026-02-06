@@ -2,6 +2,7 @@ import os
 import ngsolve as ng
 
 # needed for analytical solution
+from ngsolve import x,y,z
 from netgen.geom2d import SplineGeometry
 from sympysolution import return_solution
 from sympy import diff
