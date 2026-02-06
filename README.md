@@ -69,7 +69,28 @@ pip install impedancefitter
 pip install virtualenvwrapper
 source 3d_cell_venv/bin/virtualenvwrapper.sh
 ```
+### Simple Installation of NGSolve using pip
+```
+python -m pip install -i https://pypi.anaconda.org/mpi4py/simple openmpi   
+python -m pip install numpy scipy matplotlib jupyter ipyparallel scikit-build
+python -m pip install --upgrade ngsolve webgui_jupyter_widgets
+python -m pip install --no-cache-dir "mpi4py>=4.0.0"
+```
 
+Test the installation using
+```
+mpiexec -n 2 python -c "from mpi4py import MPI; print (MPI.get_vendor()); c=MPI.COMM_WORLD; print ('I am', c.rank, 'out of', c.size)"
+mpiexec -n 4 python -m ngsolve.demos.mpi.mpi_poisson
+```
+
+(Optional) Install PETSc
+
+```
+export PETSC_CONFIGURE_OPTIONS="--with-fc=0 --with-debugging=0 --download-hypre \
+         COPTFLAGS=\"-O2\" CXXOPTFLAGS=\"-O2\" "
+python -m pip install --upgrade --no-deps --force-reinstall --no-cache-dir petsc petsc4py
+python -m pip install git git+https://github.com/NGSolve/ngsPETSc.git
+```
 
 ### Install NGSolve from source
 
@@ -178,28 +199,6 @@ cd ~/ngsuite
 git clone https://github.com/UZerbinati/ngsPETSc.git
 cd ngsPETSc
 NGSPETSC_NO_INSTALL_REQUIRED=ON pip install .
-```
-
-### Simple Installation of NGSolve using pip
-```
-python -m pip install numpy scipy matplotlib jupyter ipyparallel scikit-build
-python -m pip install --upgrade ngsolve webgui_jupyter_widgets
-python -m pip install --no-cache-dir "mpi4py>=4.0.0"
-```
-
-Test the installation using
-```
-mpiexec -n 2 python -c "from mpi4py import MPI; print (MPI.get_vendor()); c=MPI.COMM_WORLD; print ('I am', c.rank, 'out of', c.size)"
-mpiexec -n 4 python -m ngsolve.demos.mpi.mpi_poisson
-```
-
-(Optional) Install PETSc
-
-```
-export PETSC_CONFIGURE_OPTIONS="--with-fc=0 --with-debugging=0 --download-hypre \
-         COPTFLAGS=\"-O2\" CXXOPTFLAGS=\"-O2\" "
-python -m pip install --upgrade --no-deps --force-reinstall --no-cache-dir petsc petsc4py
-python -m pip install git git+https://github.com/NGSolve/ngsPETSc.git
 ```
 
 ## Simulations
