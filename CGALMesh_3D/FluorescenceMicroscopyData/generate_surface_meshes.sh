@@ -46,5 +46,6 @@ for filepath in "$folder_inr"/*.inr.gz; do
 done
 
 # Convert Medit to NETGEN
+# please activate your env for Python packages
 python3 medit_to_netgen.py "$folder_medit" "$folder_netgen"
 echo "Mesh conversion completed."
