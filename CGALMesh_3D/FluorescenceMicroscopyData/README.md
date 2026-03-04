@@ -92,7 +92,7 @@ Make sure paths in `runMeshing.py` point to your actual input/output directories
 To save time or if you'd like to skip the mesh generation steps, we provide preprocessed data and meshes on Zenodo.
 
 **Download the data archive here:**  
-[https://zenodo.org/records/15609194](https://zenodo.org/records/15609194) #TODE: Change link when publish
+[https://zenodo.org/records/15609194](https://zenodo.org/records/15609194) 
 
 The archive contains:
 
