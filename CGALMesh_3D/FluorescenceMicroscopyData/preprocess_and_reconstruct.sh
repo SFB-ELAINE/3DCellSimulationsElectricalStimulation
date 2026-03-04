@@ -23,5 +23,5 @@ python3 process_tif_parallel.py "$folder_tiff_original" "$folder_tiff"
 
 
 conda activate #/path/to/your/conda/env/u-segment3D
-python3 recontruction3D.py "$folder_tiff" "$folder_tif_reconstruction"
+python3 reconstruction3D.py "$folder_tiff" "$folder_tif_reconstruction"
 conda deactivate
