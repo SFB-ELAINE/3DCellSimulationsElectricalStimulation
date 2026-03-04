@@ -18,9 +18,9 @@ for folder in "${folders[@]}"; do
 done
 
 # Run preprocessing and reconstruction
-
+# please activate your env for Python packages
 python3 process_tif_parallel.py "$folder_tiff_original" "$folder_tiff"
-
+# please deactivate your env for Python packages
 
 conda activate #/path/to/your/conda/env/u-segment3D
 python3 reconstruction3D.py "$folder_tiff" "$folder_tif_reconstruction"
