@@ -35,8 +35,8 @@ Run the following script to:
 ```bash
 bash preprocess_and_reconstruct.sh
 ```
-
-Make sure to edit the script to set your input, output paths and activate the conda environment for `u-segment3D`:
+''
+Make sure to edit the script to set your input, output paths and activate the conda environment for `u-segment3D` and Python virtual environment for `3DCellSimulations`:
 ```bash
 folder_tiff_original='/path/to/your/segmented_tiffs'
 folder_tiff='/path/to/output/processed_tiffs'
