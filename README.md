@@ -66,6 +66,7 @@ pip install pandas
 pip install matplotlib
 pip install networkx
 pip install impedancefitter
+pip install meshio
 pip install virtualenvwrapper
 source 3d_cell_venv/bin/virtualenvwrapper.sh
 ```
