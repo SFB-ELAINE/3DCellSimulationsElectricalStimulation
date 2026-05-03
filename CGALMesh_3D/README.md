@@ -123,10 +123,13 @@ cgalmesh3d.mesh_image(
 ```
 
 `sizing_scale` is applied isotropically to a single bbox-diagonal-derived
-length, so anisotropic *element* sizing is not supported — but anisotropic
-*input* is: when voxel spacing is correct (set in NIfTI/INR headers, or
-overridden here for TIFF), the bbox diagonal is in true physical units and
-the resulting elements are isotropic in physical space.
+length. Anisotropic *element* sizing is not supported and is not a goal
+here: imaging data in this project is acquired with anisotropic voxel
+spacing (confocal/fluorescence stacks typically have a Z spacing several
+times larger than XY), but the resulting mesh elements should be uniform
+in physical space. Setting the correct per-axis spacing via `vx/vy/vz` is
+the supported way to compensate — the bbox diagonal is then in true
+physical units and the elements are isotropic in physical space.
 
 For the existing `.tif` → `.inr.gz` → `.mesh` workflow (using
 `convert_tif_to_inr.py` and `mesh_3D_image_with_weight_and_features`), see
