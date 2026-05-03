@@ -115,16 +115,22 @@ cgalmesh3d.mesh_image(
     "Sample02_024.mesh",         # MEDIT output, consumed by medit_to_netgen.py
     sizing_scale=0.1,
     edge_size=1000.0,
+    # Optional voxel spacing override (per axis, in physical units).
+    # Leave at 0 to use the file's recorded spacing. TIFF headers carry
+    # no spacing, so confocal stacks typically need at least vz set.
+    vx=0.0, vy=0.0, vz=0.0,
 )
 ```
+
+`sizing_scale` is applied isotropically to a single bbox-diagonal-derived
+length, so anisotropic *element* sizing is not supported — but anisotropic
+*input* is: when voxel spacing is correct (set in NIfTI/INR headers, or
+overridden here for TIFF), the bbox diagonal is in true physical units and
+the resulting elements are isotropic in physical space.
 
 For the existing `.tif` → `.inr.gz` → `.mesh` workflow (using
 `convert_tif_to_inr.py` and `mesh_3D_image_with_weight_and_features`), see
 [`FluorescenceMicroscopyData/README.md`](FluorescenceMicroscopyData/README.md).
-With direct TIFF/NIfTI loading via VTK, the `.inr.gz` step can be skipped.
-Note that TIFF headers do not record voxel spacing, so `sizing_scale`
-operates on unit voxels — pass an explicit `edge_size` (or pre-set spacing
-in a NIfTI header) when physical units matter.
 
 # Convert images to .inr format
 

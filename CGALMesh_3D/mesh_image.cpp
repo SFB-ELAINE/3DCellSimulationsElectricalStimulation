@@ -33,7 +33,10 @@ namespace params = CGAL::parameters;
 bool mesh_image(const std::string& input_path,
                 const std::string& output_path,
                 double sizing_scale,
-                double edge_size)
+                double edge_size,
+                double vx,
+                double vy,
+                double vz)
 {
   oneapi::tbb::global_control global_limit(
     oneapi::tbb::global_control::max_allowed_parallelism, 12);
@@ -41,6 +44,19 @@ bool mesh_image(const std::string& input_path,
   CGAL::Image_3 image;
   if (!load_image(input_path, image)) {
     return false;
+  }
+
+  // Per-axis voxel-spacing override. Useful for TIFF, which carries no spacing
+  // in its header; NIfTI/INR users only need this if the file's recorded
+  // spacing is wrong. A zero leaves the file's value untouched.
+  if (vx > 0.0) image.image()->vx = vx;
+  if (vy > 0.0) image.image()->vy = vy;
+  if (vz > 0.0) image.image()->vz = vz;
+  if (vx > 0.0 || vy > 0.0 || vz > 0.0) {
+    std::cout << "Voxel spacing now (vx,vy,vz) = ("
+              << image.image()->vx << ", "
+              << image.image()->vy << ", "
+              << image.image()->vz << ")" << std::endl;
   }
 
   Mesh_domain domain = Mesh_domain::create_labeled_image_mesh_domain(
