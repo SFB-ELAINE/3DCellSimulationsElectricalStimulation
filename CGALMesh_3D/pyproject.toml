@@ -1,0 +1,20 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.0"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "cgalmesh3d"
+version = "0.1.0"
+description = "Thin CGAL Mesh_3 wrapper for labeled 3D images"
+requires-python = ">=3.8"
+authors = [{ name = "Julius Zimmermann" }]
+
+[tool.scikit-build]
+minimum-version = "0.10"
+build-dir = "build/{wheel_tag}"
+cmake.source-dir = "."
+cmake.build-type = "Release"
+wheel.py-api = "cp312"
+
+[tool.scikit-build.cmake.define]
+CGAL_ACTIVATE_CONCURRENT_MESH_3 = "ON"
