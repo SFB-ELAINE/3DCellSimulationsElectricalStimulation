@@ -46,7 +46,8 @@ run
 # Python module (`cgalmesh3d`)
 
 A thin nanobind wrapper exposes the same meshing pipeline as `mesh_3D_image`
-to Python. It supports `.inr/.inr.gz` and (when VTK is available) `.nii/.nii.gz`.
+to Python. It supports `.inr/.inr.gz` and, when VTK is available, also
+`.nii/.nii.gz` and `.tif/.tiff` (multi-page TIFFs read as 3D stacks).
 
 ## Install (in a virtual environment)
 
@@ -107,22 +108,23 @@ will only build when it is available.
 
 ## Usage
 
-The wrapper plugs into the existing `.tif` → `.inr.gz` → `.mesh` workflow
-documented in [`FluorescenceMicroscopyData/README.md`](FluorescenceMicroscopyData/README.md).
-Convert a labeled `.tif` stack with `convert_tif_to_inr.py` first, then call:
-
 ```python
 import cgalmesh3d
 cgalmesh3d.mesh_image(
-    "embryo.inr.gz",         # output of convert_tif_to_inr.py
-    "embryo.mesh",           # MEDIT output, consumed by medit_to_netgen.py
+    "Sample02_024_segCell.tif",  # .tif/.tiff, .nii/.nii.gz, or .inr/.inr.gz
+    "Sample02_024.mesh",         # MEDIT output, consumed by medit_to_netgen.py
     sizing_scale=0.1,
     edge_size=1000.0,
 )
 ```
 
-If VTK is available, `.nii`/`.nii.gz` inputs are also accepted, so the
-intermediate `.inr.gz` step can be skipped when working with NIfTI data.
+For the existing `.tif` → `.inr.gz` → `.mesh` workflow (using
+`convert_tif_to_inr.py` and `mesh_3D_image_with_weight_and_features`), see
+[`FluorescenceMicroscopyData/README.md`](FluorescenceMicroscopyData/README.md).
+With direct TIFF/NIfTI loading via VTK, the `.inr.gz` step can be skipped.
+Note that TIFF headers do not record voxel spacing, so `sizing_scale`
+operates on unit voxels — pass an explicit `edge_size` (or pre-set spacing
+in a NIfTI header) when physical units matter.
 
 # Convert images to .inr format
 
